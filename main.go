@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -39,8 +38,8 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func faqHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprintf(w, "<h1>Faq</h1>")
+	tplPath := filepath.Join("templates", "faq.gohtml")
+	executeTemplate(w, tplPath)
 }
 
 func main() {

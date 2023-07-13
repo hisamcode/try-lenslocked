@@ -7,5 +7,16 @@
   <title>Document</title>
 </head>
   <h1>Welcome to my site!</h1>
+  {{template "lorem-ipsum"}}
+  {{template "lorem-ipsum"}}
+  {{template "lorem-ipsum"}}
+
+
+  {{define "lorem-ipsum"}}
+  <!-- its ok, not up to bottom bcz its parse first -->
+  <p>
+    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nam, pariatur! Magni pariatur dolore in non quod sunt laudantium cum obcaecati atque temporibus ex, unde corrupti eius earum nihil dolores voluptatibus!
+  </p>
+  {{end}}
 </body>
 </html>

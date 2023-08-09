@@ -11,6 +11,8 @@ services:
       POSTGRES_DB: lenslocked # Database name
     ports: # Expose ports so that apps not running via docker-compose can connect to them.
       - 5432:5432 # format here is "port on our machine":"port on container"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
 
   # Adminer provides a nice little web UI to connect to databases
   adminer:

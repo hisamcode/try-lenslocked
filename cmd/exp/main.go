@@ -3,14 +3,18 @@ package main
 import (
 	"errors"
 	"fmt"
+
+	"github.com/hisamcode/lenslocked/models"
 )
 
 func main() {
-	err := CreateOrg()
-	if err != nil {
-		err = errors.Unwrap(err)
-		fmt.Println(err)
-	}
+	p := models.PostgreConfig{Host: "haha"}
+	fmt.Printf("%s", p)
+	// err := CreateOrg()
+	// if err != nil {
+	// 	err = errors.Unwrap(err)
+	// 	fmt.Println(err)
+	// }
 }
 
 func CreateOrg() error {

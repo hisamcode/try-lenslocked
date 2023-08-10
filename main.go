@@ -44,8 +44,12 @@ func main() {
 	defer db.Close()
 
 	userService := models.UserService{DB: db}
+	sessionService := models.SessionService{DB: db}
 
-	usersC := controllers.Users{UserService: &userService}
+	usersC := controllers.Users{
+		UserService:    &userService,
+		SessionService: &sessionService,
+	}
 
 	usersC.Templates.New = views.Must(views.ParseFS(
 		templates.FS,
@@ -60,6 +64,7 @@ func main() {
 	r.Post("/users", usersC.Create)
 	r.Get("/signin", usersC.SignIn)
 	r.Post("/signin", usersC.ProcessSignIn)
+	r.Post("/signout", usersC.ProceessSignOut)
 	r.Get("/users/me", usersC.CurrentUser)
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {

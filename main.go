@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -37,6 +38,7 @@ func main() {
 		))))
 
 	cfg := models.DefaultPostgresConfig()
+	fmt.Println(cfg)
 	db, err := models.Open(cfg)
 	if err != nil {
 		panic(err)

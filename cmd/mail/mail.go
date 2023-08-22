@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/go-mail/mail/v2"
+	"github.com/hisamcode/lenslocked/models"
 )
 
 const (
@@ -14,6 +15,42 @@ const (
 )
 
 func main() {
+
+	ess := models.NewEmailService(models.SMTPConfig{
+		Host:     host,
+		Port:     port,
+		Username: username,
+		Password: password,
+	})
+
+	err1 := ess.ForgotPassword("hisamcode@gmail.com", "http://hisamcode.com/reset-pw?token=adasdasd2131")
+	if err1 != nil {
+		panic(err1)
+	}
+
+	return
+	email := models.Email{
+		From:      "hera@gmail.com",
+		To:        "hisamcode@gmail.com",
+		Subject:   "this is test email",
+		Plaintext: "this is the body of the email",
+		HTML:      "<h1>Hi dear</h1><p>This is email the email</p><p>Hope you enjoy it</p>",
+	}
+	es := models.NewEmailService(models.SMTPConfig{
+		Host:     host,
+		Port:     port,
+		Username: username,
+		Password: password,
+	})
+
+	e := es.Send(email)
+	if e != nil {
+		panic(e)
+	}
+
+	fmt.Println("Email sent")
+
+	return
 	from := "hera@gmail.com"
 	to := "hisamcode@gmail.com"
 	subject := "this is a test email"

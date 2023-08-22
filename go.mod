@@ -2,6 +2,8 @@ module github.com/hisamcode/lenslocked
 
 go 1.20
 
+require github.com/go-chi/chi v1.5.4
+
 require (
 	github.com/ClickHouse/ch-go v0.57.0 // indirect
 	github.com/ClickHouse/clickhouse-go/v2 v2.13.0 // indirect
@@ -9,10 +11,10 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/elastic/go-sysinfo v1.11.0 // indirect
 	github.com/elastic/go-windows v1.0.1 // indirect
-	github.com/go-chi/chi v1.5.4
 	github.com/go-chi/chi/v5 v5.0.8 // indirect
 	github.com/go-faster/city v1.0.1 // indirect
 	github.com/go-faster/errors v0.6.1 // indirect
+	github.com/go-mail/mail/v2 v2.3.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
@@ -50,6 +52,7 @@ require (
 	golang.org/x/sys v0.10.0 // indirect
 	golang.org/x/text v0.11.0 // indirect
 	golang.org/x/tools v0.10.0 // indirect
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	howett.net/plist v1.0.0 // indirect
 	lukechampine.com/uint128 v1.3.0 // indirect

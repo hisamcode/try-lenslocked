@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/hisamcode/lenslocked/context"
 	"github.com/hisamcode/lenslocked/models"
 )
 
@@ -80,22 +81,28 @@ func (u Users) ProcessSignIn(w http.ResponseWriter, r *http.Request) {
 }
 
 func (u Users) CurrentUser(w http.ResponseWriter, r *http.Request) {
-
-	token, err := ReadCookie(r, CookieSession)
-	if err != nil {
-		fmt.Println(err)
+	user := context.User(r.Context())
+	if user == nil {
 		http.Redirect(w, r, "/signin", http.StatusFound)
 		return
 	}
-
-	user, err := u.SessionService.User(*token)
-	if err != nil {
-		fmt.Println(err)
-		http.Redirect(w, r, "/signin", http.StatusFound)
-		return
-	}
-
 	fmt.Fprintf(w, "Current user: %s\n", user.Email)
+
+	// token, err := ReadCookie(r, CookieSession)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	http.Redirect(w, r, "/signin", http.StatusFound)
+	// 	return
+	// }
+
+	// user, err := u.SessionService.User(*token)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	http.Redirect(w, r, "/signin", http.StatusFound)
+	// 	return
+	// }
+
+	// fmt.Fprintf(w, "Current user: %s\n", user.Email)
 }
 
 func (u Users) ProceessSignOut(w http.ResponseWriter, r *http.Request) {

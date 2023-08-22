@@ -2,3 +2,5 @@ tmp
 pgdata
 .air.toml
 gitignore
+
+.env

@@ -2,9 +2,13 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"os"
+	"strconv"
 
 	"github.com/go-mail/mail/v2"
 	"github.com/hisamcode/lenslocked/models"
+	"github.com/joho/godotenv"
 )
 
 const (
@@ -15,6 +19,20 @@ const (
 )
 
 func main() {
+	// env
+	err2 := godotenv.Load()
+	if err2 != nil {
+		log.Fatal("Error loading .env file")
+	}
+	host := os.Getenv("SMTP_HOST")
+	portStr := os.Getenv("SMTP_PORT")
+	port, err := strconv.Atoi(portStr)
+	if err != nil {
+		panic(err)
+	}
+	username := os.Getenv("SMTP_USERNAME")
+	password := os.Getenv("SMTP_PASSWORD")
+	return
 
 	ess := models.NewEmailService(models.SMTPConfig{
 		Host:     host,
@@ -74,9 +92,9 @@ func main() {
 	// }
 	// defer sender.Close()
 	// sender.Send(from, []string{to}, msg)
-	err := dialer.DialAndSend(msg)
-	if err != nil {
-		panic(err)
+	err3 := dialer.DialAndSend(msg)
+	if err3 != nil {
+		panic(err3)
 	}
 
 	fmt.Println("Message sent")

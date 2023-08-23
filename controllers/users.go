@@ -15,6 +15,7 @@ type Users struct {
 		SignIn         Template
 		ForgotPassword Template
 		CheckYourEmail Template
+		ResetPassword  Template
 	}
 	UserService          *models.UserService
 	SessionService       *models.SessionService
@@ -132,7 +133,9 @@ func (u Users) ProcessForgotPassword(w http.ResponseWriter, r *http.Request) {
 	vals := url.Values{
 		"token": {pwReset.Token},
 	}
+
 	resetURL := "https://www.lenslocked.com/reset-pw?" + vals.Encode()
+
 	err = u.EmailService.ForgotPassword(data.Email, resetURL)
 	if err != nil {
 		fmt.Println(err)
@@ -143,6 +146,48 @@ func (u Users) ProcessForgotPassword(w http.ResponseWriter, r *http.Request) {
 	// Don't render reset token here! We need the user to confirm they have
 	// access to the email account to verify their identity
 	u.Templates.CheckYourEmail.Execute(w, r, data)
+}
+
+func (u Users) ResetPassword(w http.ResponseWriter, r *http.Request) {
+	var data struct {
+		Token string
+	}
+	data.Token = r.FormValue("token")
+	u.Templates.ResetPassword.Execute(w, r, data)
+}
+
+func (u Users) ProcessResetPassword(w http.ResponseWriter, r *http.Request) {
+	var data struct {
+		Token    string
+		Password string
+	}
+	data.Token = r.FormValue("token")
+	data.Password = r.FormValue("password")
+
+	user, err := u.PasswordResetService.Consume(data.Token)
+	if err != nil {
+		fmt.Println(err)
+		// TODO: Distinguish between types of errors.
+		http.Error(w, "Something went wrong.", http.StatusInternalServerError)
+		return
+	}
+
+	err = u.UserService.UpdatePassword(int(user.ID), data.Password)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Something went wrong.", http.StatusInternalServerError)
+		return
+	}
+
+	// Sign the user in now that their password has been reset.
+	// Any errors from this point onwards should redirect the user to the sign in page
+	session, err := u.SessionService.Create(int(user.ID))
+	if err != nil {
+		fmt.Println(err)
+		http.Redirect(w, r, "/signin", http.StatusFound)
+	}
+	SetCookie(w, CookieSession, *session.Token)
+	http.Redirect(w, r, "/users/me", http.StatusFound)
 }
 
 type UserMiddleware struct {

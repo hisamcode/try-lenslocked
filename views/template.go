@@ -9,6 +9,7 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
+	"path"
 
 	"github.com/gorilla/csrf"
 	"github.com/hisamcode/lenslocked/context"
@@ -27,7 +28,7 @@ func Must(t Template, err error) Template {
 }
 
 func ParseFS(fs fs.FS, patterns ...string) (Template, error) {
-	tpl := template.New(patterns[0])
+	tpl := template.New(path.Base(patterns[0]))
 	tpl.Funcs(
 		template.FuncMap{
 			// i dont know its weird, but this is just for when parsed is not error.

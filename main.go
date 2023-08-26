@@ -83,6 +83,7 @@ func main() {
 	sessionService := &models.SessionService{DB: db}
 	pwResetService := &models.PasswordResetService{DB: db}
 	emailService := models.NewEmailService(cfg.SMTP)
+	galleryService := &models.GalleryService{DB: db}
 
 	// Setup middleware
 	umw := controllers.UserMiddleware{
@@ -125,6 +126,14 @@ func main() {
 	usersC.Templates.ResetPassword = views.Must(views.ParseFS(
 		templates.FS,
 		"reset-pw.gohtml", "tailwind.gohtml",
+	))
+
+	galleriesC := controllers.Galleries{
+		GalleryService: galleryService,
+	}
+	galleriesC.Template.New = views.Must(views.ParseFS(
+		templates.FS,
+		"galleries/new.gohtml", "tailwind.gohtml",
 	))
 
 	// Setup our router and routes
@@ -170,6 +179,7 @@ func main() {
 			fmt.Fprintf(w, "hello")
 		})
 	})
+	r.Get("/galleries/new", galleriesC.New)
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not found", http.StatusNotFound)

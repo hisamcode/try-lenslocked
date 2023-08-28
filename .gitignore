@@ -1,6 +1,6 @@
 tmp
 pgdata
+images
 .air.toml
-gitignore
 
 .env
